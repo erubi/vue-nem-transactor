@@ -11,7 +11,7 @@
 2. VueJS 2 Tutorial playlist: https://www.youtube.com/playlist?list=PL4cUxeGkcC9gQcYgjhBoeQH7wiAyZNrYa
 3. NEM-SDK documentation: https://github.com/QuantumMechanics/NEM-sdk
 4. NIS API documentation: https://bob.nem.ninja/docs/
-  > For debugging
+  ##### For debugging
 5. NEM NanoWallet: https://github.com/NemProject/NanoWallet/releases/download/1.4.13/NanoWallet-1.4.13.zip
 6. Testnet explorer: http://bob.nem.ninja:8765
 
