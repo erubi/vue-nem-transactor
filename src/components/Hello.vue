@@ -30,7 +30,7 @@ export default {
         this.address,
       ).then((res) => {
         console.log(res);
-        this.balance = `Balance: ${balanceComma.format(res.account.balance / 1000000)} XEM`;
+        this.balance = `${balanceComma.format(res.account.balance / 1000000)} XEM`;
       }, (err) => {
         console.log(err);
       });

@@ -1,6 +1,6 @@
-# dev-block
+# LuxTag Developer Initiation
 
-> A Vue.js project
+> Project scaffolding of a NEM blockchain application using VueJS.
 
 ## Build Setup
 
@@ -9,7 +9,7 @@
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run dev (ignore the compiler warnings)
 
 # build for production with minification
 npm run build
