@@ -4,9 +4,7 @@
 
 ## Goal
 
-Take some time to explore the learning resources listed below.
-
-Fork this repository under your own Bitbucket account. Then, write an application that takes a NEM testnet address as user input, and displays the transaction history of the given address.
+Take some time to explore the learning resources listed below. You can get started on the given task by forking this repository under your own Bitbucket account.
 
 ## Learning Resources
 1. Introduction to blockchain technology: https://youtu.be/bBC-nXj3Ng4
