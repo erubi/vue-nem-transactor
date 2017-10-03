@@ -13,13 +13,13 @@ Fork this repository under your own Bitbucket account. Then, write an applicatio
 2. VueJS 2 Tutorial playlist: https://www.youtube.com/playlist?list=PL4cUxeGkcC9gQcYgjhBoeQH7wiAyZNrYa
 3. NEM-SDK documentation: https://github.com/QuantumMechanics/NEM-sdk
 4. NIS API documentation: https://bob.nem.ninja/docs/
- ##### For debugging
+##### For debugging
 5. NEM NanoWallet: https://github.com/NemProject/NanoWallet/releases/download/1.4.13/NanoWallet-1.4.13.zip
 6. Testnet explorer: http://bob.nem.ninja:8765
 
 ## Build Setup
 
-> Requires a recent installation of NodeJS and npm.
+Requires a recent installation of NodeJS and npm.
 
 ``` bash
 # install dependencies
