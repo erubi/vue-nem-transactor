@@ -1,20 +1,17 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <img src="./assets/logo.png">
+    <HelloWorld/>
   </div>
 </template>
 
 <script>
-import nem from 'nem-sdk';
+import HelloWorld from './components/HelloWorld';
 
 export default {
-  data() {
-    return {
-      name: 'app',
-    };
-  },
-  created() {
-    console.log(nem);
+  name: 'app',
+  components: {
+    HelloWorld,
   },
 };
 </script>
