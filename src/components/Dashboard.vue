@@ -17,7 +17,10 @@
       />
     </div>
 
-    <TransactionsList />
+    <TransactionsList
+       :fetchIncomingTransactions="fetchIncomingTransactions"
+       :fetchOutgoingTransactions="fetchOutgoingTransactions"
+    />
 
   </div>
 </template>
@@ -102,6 +105,25 @@ export default {
         console.log(err);
         throw err;
       });
+    },
+    fetchIncomingTransactions() {
+      if (!this.address) return Promise.resolve([]);
+
+      const endpoint = nem.model.objects.create('endpoint')(this.$data.endpoint.host, this.$data.endpoint.port);
+      return nem.com.requests.account.transactions.incoming(endpoint, this.address)
+      .then((res) => {
+        return res.data.map((r) => {
+          const sender = nem.model.address.toAddress(r.transaction.signer, -104);
+          return Object.assign({}, r, { transaction: { sender, ...r.transaction } });
+        });
+      });
+    },
+    fetchOutgoingTransactions() {
+      if (!this.address) return Promise.resolve([]);
+
+      const endpoint = nem.model.objects.create('endpoint')(this.$data.endpoint.host, this.$data.endpoint.port);
+      return nem.com.requests.account.transactions.outgoing(endpoint, this.address)
+      .then(res => res.data);
     },
   },
   created() {
