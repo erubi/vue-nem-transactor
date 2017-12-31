@@ -4,12 +4,17 @@
       <h3>Send XEM</h3>
       <div>
         <label for="recipient-address">Recipient Address</label>
-        <input v-model="recipientAddress" id="recipient-address"/>
+        <input v-model="proxyRecipientAddress" id="recipient-address"/>
       </div>
 
       <div>
         <label for="xem-amount">Amount (XEM)</label>
-        <input v-model="xemAmount" id="xem-amount" type="number"/>
+        <input v-model="proxyXEMAmount" id="xem-amount" type="number"/>
+      </div>
+
+      <div>
+        <label for="message">Message</label>
+        <input v-model="proxyMessage" id="message"/>
       </div>
 
       <button @click.prevent="onSendXEM({ recipientAddress, xemAmount, message })">Submit</button>
@@ -19,13 +24,23 @@
 
 <script>
 export default {
-  props: ['onSendXEM'],
+  props: ['onSendXEM', 'xemAmount', 'recipientAddress', 'message'],
   data() {
-    return {
-      recipientAddress: '',
-      xemAmount: null,
-      message: '',
-    };
+    return { };
+  },
+  computed: {
+    proxyRecipientAddress: {
+      get() { return this.recipientAddress; },
+      set(newValue) { this.$emit('update:recipientAddress', newValue); },
+    },
+    proxyXEMAmount: {
+      get() { return this.xemAmount; },
+      set(newValue) { this.$emit('update:xemAmount', newValue); },
+    },
+    proxyMessage: {
+      get() { return this.message; },
+      set(newValue) { this.$emit('update:message', newValue); },
+    },
   },
 };
 </script>
