@@ -17,12 +17,14 @@
          :recipientAddress.sync="recipientAddress"
          :xemAmount.sync="xemAmount"
          :message.sync="message"
-      />
+       />
     </div>
 
-    <TransactionsList
-       :recentTransactions="recentTransactions"
-    />
+    <div class="right-ctr">
+      <TransactionsList
+         :recentTransactions="recentTransactions"
+       />
+    </div>
 
   </div>
 </template>
@@ -58,6 +60,7 @@ export default {
     return initData;
   },
   updated() {
+    // Understand this may not be best for security, just for testing
     const toSave = (({ notif, recentTransactions, ...rest }) => rest)(this.$data);
     localStorage.setItem('lux-nem-transactor', JSON.stringify(toSave));
   },
@@ -85,7 +88,7 @@ export default {
         nem.model.transactions.prepare('transferTransaction')(common, transferTransaction, nem.model.network.data.testnet.id);
       const endpoint = nem.model.objects.create('endpoint')(this.endpoint.host, this.endpoint.port);
 
-      // nem send not using promise reject, need try/catch
+      // nem errors not always cauught by promise reject, need try/catch
       try {
         return nem.model.transactions.send(common, transactionEntity, endpoint)
         .then((res) => {
@@ -93,9 +96,13 @@ export default {
           this.xemAmount = null;
           this.message = '';
           console.log(res);
+        })
+        .catch((e) => {
+          this.notif = { msg: e.message || e.data.message || 'Error sending transaction', error: true };
+          return Promise.reject(e);
         });
       } catch (e) {
-        this.notif = { msg: e.message, error: true };
+        this.notif = { msg: e.message || e.data.message || 'Error sending transaction', error: true };
         return Promise.reject(e);
       }
     },
@@ -117,13 +124,19 @@ export default {
       const endpoint = nem.model.objects.create('endpoint')(nem.model.nodes.defaultTestnet, nem.model.nodes.websocketPort);
       this.connector = nem.com.websockets.connector.create(endpoint, this.address);
 
+      const nemTimeStampToDate = (ts) => {
+        const nemEpoch = Date.UTC(2015, 2, 29, 0, 6, 25, 0);
+        return new Date(nemEpoch + (ts * 1000));
+      };
+
       const formatTransaction = (t) => {
         let sender = nem.model.address.toAddress(t.signer, -104);
         if (sender === this.address) sender = 'Self';
         let recipient = t.recipient;
         if (recipient === this.address) recipient = 'Self';
         const message = nem.utils.format.hexMessage(t.message);
-        return Object.assign({}, t, { recipient, sender, message });
+        const timeStamp = nemTimeStampToDate(t.timeStamp).toUTCString();
+        return Object.assign({}, t, { recipient, sender, message, timeStamp });
       };
 
       this.connector.connect().then(() => {
@@ -136,13 +149,23 @@ export default {
         });
 
         nem.com.websockets.subscribe.account.transactions.confirmed(this.connector, (res) => {
-          this.notif = { msg: 'Transaction confirmed' };
+          if (res.transaction.recipient === this.address) {
+            this.notif = { msg: 'Transaction received (confirmed)' };
+            return;
+          }
+          this.notif = { msg: 'Transaction sent (confirmed)' };
+
           // Recent transactions subscriptions not updating, getting most recent here
           this.recentTransactions.unshift(formatTransaction(res.transaction));
         });
 
         nem.com.websockets.subscribe.account.transactions.unconfirmed(this.connector, (res) => {
-          this.notif = { msg: 'Succesfully sent transaction (unconfirmed)' };
+          if (res.transaction.recipient === this.address) {
+            this.notif = { msg: 'Transaction received (unconfirmed)' };
+            return;
+          }
+
+          this.notif = { msg: 'Sent transaction (unconfirmed)' };
         });
 
         nem.com.websockets.requests.account.data(this.connector);
@@ -164,17 +187,39 @@ export default {
   width: 1000px;
   height: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: baseline;
 }
 
 .left-ctr {
+  flex: 1;
   width: 50%;
   display: inline-block;
-  float: left;
+}
+
+.right-ctr {
+  flex: 1;
+  width: 50%;
+  display: inline-block;
 }
 
 .balance {
+  width: 100%;
   margin-bottom: 50px;
 }
+
+@media screen and (max-width: 1000px) {
+  .app-ctr {
+    width: 100%;
+  }
+  .left-ctr, .right-ctr {
+    margin-bottom:20px;
+    width: 100%;
+  }
+}
+
 h1, h2 {
   font-weight: normal;
 }

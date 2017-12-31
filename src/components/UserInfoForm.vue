@@ -48,7 +48,7 @@ export default {
 <style scoped>
 
 .clearfix{
- content: "";
+  content: "";
   display: table;
   clear: both;
 }

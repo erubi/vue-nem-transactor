@@ -40,9 +40,14 @@ html, body, #app {
   padding: 5px;
 }
 
+.top-bar span {
+  margin-right: 40px;
+}
+
 .top-bar img {
   float: left;
   display: inline-block;
   height: 100%;
+  width: 40px;
 }
 </style>

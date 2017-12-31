@@ -29,11 +29,15 @@ export default {
 
 <style scoped>
 
+div {
+  text-align: left;
+}
+
 ul {
   height: 500px;
   overflow-y: scroll;
   list-style: none;
-  text-align: left
+  padding: 0;
 }
 
 li {

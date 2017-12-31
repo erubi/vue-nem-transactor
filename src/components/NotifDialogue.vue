@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 div {
-  position: absolute;
+  position: fixed;
   top: 60px;
   right: 50px;
   height: 50px;
